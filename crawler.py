@@ -18,6 +18,11 @@ options.add_argument("disable-gpu")
 options.add_argument(r'/Users/nagitak/Library/Application Support/Google/Chrome/Profile 3')
 options.add_experimental_option("detach", True)
 
+def no_space(text):
+    text1 = re.sub('&nbsp; | &nbsp;| \n|\t|\r', '', text)
+    reuslt = re.sub('\n\n', '', text1)
+    return reuslt
+
 browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chromedriver', chrome_options=options)
 browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
 time.sleep(3)
@@ -37,7 +42,5 @@ browser.get('https://news.naver.com')
 
 # soup = BeautifulSoup(browser.page_source, 'lxml') # html parsing
 
-# def no_space(text):
-#     text1 = re.sub('&nbsp; | &nbsp;| \n|\t|\r', '', text)
-#     text2 = re.sub('\n\n', '', text1)
-#     return text2
+# 상위 3개 타이틀 클릭하고 타이틀 & url 복사해서 DB에 저장
+
