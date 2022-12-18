@@ -27,10 +27,15 @@ def noSpace(text):
 
 # 채널 필터링
 def textMatch(text):
-    if re.search(r'매일경제', text):
-        return text
+    if re.search(r'구독자수', text):
+        splitText = re.split('\n', text)[3]
+        chaanel = re.findall('[가-힣+]', splitText)
+        result = ''.join(chaanel)
+        return result
     else:
-        return text
+        chaanel = re.findall('[가-힣+]', text)
+        result = ''.join(chaanel)
+        return result
         
 # browser 열고 로그인 후 news url 진입
 browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chromedriver', chrome_options=options)
@@ -53,6 +58,7 @@ soup = BeautifulSoup(browser.page_source, 'lxml') # html parsing
 # title & url 크롤링해서 DB에 저장
 news = soup.find_all('div', attrs={'class': 'main_brick_item _channel_news_card_wrapper'})
 for i in range(len(news)):
+    channel = textMatch(news[i].find_all('h4', attrs={'class': 'channel'})[0].text)
     title_first =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[0].text
     title_second =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[1].text
     title_third =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[2].text
@@ -60,4 +66,16 @@ for i in range(len(news)):
     link_second =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[1]['href']
     link_third =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[2]['href']
     date = datetime.datetime.now().strftime('%y-%m-%d %H:%M')
-    print(title_first, link_first, title_second, link_second, title_third, link_third, date)
+    print('channel', channel)
+    print('title_first', title_first)
+    print('link_first', link_first)
+    print('date', date)
+    print('channel', channel)
+    print('title_second',title_second)
+    print('link_second', link_second)
+    print('date', date)
+    print('channel', channel)
+    print('title_third', title_third)
+    print('link_third', link_third)
+    print('date', date)
+    
