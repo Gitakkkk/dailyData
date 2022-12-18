@@ -8,9 +8,20 @@ import time
 import dotenv
 import os
 import datetime
+import mariadb 
 
 dotenv_file = dotenv.find_dotenv()
 dotenv.load_dotenv(dotenv_file)
+
+# python - mariadb connect
+conn = mariadb.connect(
+    user=os.environ['dbUser'],
+    password=os.environ['dbPW'],
+    host=os.environ['dbHost'],
+    port=int(os.environ['dbPort']),
+    database=os.environ['dbName']
+)
+cur = conn.cursor() 
 
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
@@ -19,7 +30,7 @@ options.add_argument("disable-gpu")
 options.add_argument(r'/Users/nagitak/Library/Application Support/Google/Chrome/Profile 3')
 options.add_experimental_option("detach", True)
 
-# html element 중 필요 없는 개행과 공백 제거
+# 필요 없는 개행과 공백 제거
 def noSpace(text):
     text1 = re.sub('&nbsp; | &nbsp;| \n|\t|\r', '', text)
     reuslt = re.sub('\n\n', '', text1)
@@ -37,7 +48,7 @@ def textMatch(text):
         result = ''.join(chaanel)
         return result
         
-# browser 열고 로그인 후 news url 진입
+# 브라우저 열고 로그인 후 뉴스 진입
 browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chromedriver', chrome_options=options)
 browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
 time.sleep(3)
@@ -66,16 +77,15 @@ for i in range(len(news)):
     link_second =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[1]['href']
     link_third =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[2]['href']
     date = datetime.datetime.now().strftime('%y-%m-%d %H:%M')
-    print('channel', channel)
-    print('title_first', title_first)
-    print('link_first', link_first)
-    print('date', date)
-    print('channel', channel)
-    print('title_second',title_second)
-    print('link_second', link_second)
-    print('date', date)
-    print('channel', channel)
-    print('title_third', title_third)
-    print('link_third', link_third)
-    print('date', date)
+    print(f'{channel}\n{title_first}\n{link_first}\n{date}\n{channel}\n{title_second}\n{link_second}\n{date}\n{channel}\n{title_third}\n{link_third}\n{date}')
+    try: 
+        cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_first, link_first, date))
+        cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_second, link_second, date))
+        cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_third, link_third, date))
+    except mariadb.Error:
+        print(f"db insert error: {mariadb.Error}")
+
+conn.commit()
+conn.close()
+browser.quit()
     
