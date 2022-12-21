@@ -48,7 +48,7 @@ def textMatch(text):
         chaanel = re.findall('[가-힣+]', text)
         result = ''.join(chaanel)
         return result
-        
+
 # 브라우저 열고 로그인 후 뉴스 진입
 browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chromedriver', chrome_options=options)
 browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
