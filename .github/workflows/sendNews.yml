@@ -26,12 +26,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install xclip
-          python -m pip install --upgrade pip
-          pip install beautifulsoup4 lxml pyperclip python-dotenv pytz requests selenium gtk
+          sudo apt-get install xclip python3 python3-pip
+          sudo pip3 install beautifulsoup4 lxml pyperclip python-dotenv pytz requests selenium
       - name: start crawler
         run: |
-          python crawler.py
+          python3 crawler.py
         env:
           NAVERID: ${{ secrets.NAVERID }}
           NAVERPW: ${{ secrets.NAVERPW }}
