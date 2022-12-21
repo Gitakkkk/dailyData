@@ -31,7 +31,9 @@ jobs:
         env:
           NAVERID: ${{ secrets.NAVERID }}
           NAVERPW: ${{ secrets.NAVERPW }}
+          TEST: 'TEST'
         run: |
           echo ${{ env.NAVERID }}
           echo ${{ secrets.NAVERPW }}
+          echo ${{ env.TEST }}
           python3 news.py
