@@ -4,10 +4,8 @@
 name: Python package
 
 on:
-  # schedule:
-  #   - cron: '* * * * *'
-  push:
-    branches: [main]
+  schedule:
+    - cron: '* * * * *'
 
 jobs:
   build:
