@@ -9,6 +9,10 @@ on:
   push:
     branches: [main]
 
+env:
+  NAVERID: ${{ secrets.NAVERID }}
+  NAVERPW: ${{ secrets.NAVERPW }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,11 +30,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install beautifulsoup4 lxml python-dotenv pytz requests selenium
-        env:
-          NAVERID: ${{ secrets.NAVERID }}
-          NAVERPW: ${{ secrets.NAVERPW }}
+          pip install beautifulsoup4 lxml python-dotenv requests
       - name: start crawler
         run: |
-          NAVERID
+          echo ${{ env.NAVERID }}
           python3 news.py
