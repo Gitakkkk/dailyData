@@ -25,8 +25,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          sudo apt-get install xsel
           python -m pip install --upgrade pip
+          pip install gtk
           pip install beautifulsoup4 lxml pyperclip python-dotenv pytz requests selenium
       # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
       # - name: Generate Environment Variables File for Production
