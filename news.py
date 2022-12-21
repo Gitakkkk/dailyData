@@ -19,6 +19,7 @@ links = []
 # for i in range(3):
 #     titles.append({str(articles[i].text)})
 #     links.append(f'http:{articles[i].a["href"]}')
+# push push
 
 # 한경비즈니스
 res = requests.get('https://magazine.hankyung.com/tag/%EC%9E%AC%ED%85%8C%ED%81%AC')
