@@ -2,18 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
-# from github import Github, Issue
-# import pyperclip
 import re
-# import time
+import time
 import dotenv
 import os
 import datetime
-import mariadb 
+import pyperclip
+import mariadb
 
-dotenv_file = dotenv.find_dotenv()
-dotenv.load_dotenv(dotenv_file)
-
+# python - mariadb connect
 conn = mariadb.connect(
     user=os.environ['dbUser'],
     password=os.environ['dbPW'],
@@ -22,13 +19,6 @@ conn = mariadb.connect(
     database=os.environ['dbName']
 )
 cur = conn.cursor() 
-
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('window-size=1920x1080')
-options.add_argument("disable-gpu")
-options.add_argument(r'/Users/nagitak/Library/Application Support/Google/Chrome/Profile 3')
-options.add_experimental_option("detach", True)
 
 # 필요 없는 개행과 공백 제거
 def noSpace(text):
@@ -48,27 +38,31 @@ def textMatch(text):
         result = ''.join(chaanel)
         return result
 
-# 브라우저 열고 로그인 후 뉴스 진입
+dotenv_file = dotenv.find_dotenv()
+dotenv.load_dotenv(dotenv_file)
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+options.add_argument('window-size=1920x1080')
+options.add_argument("disable-gpu")
+options.add_experimental_option("detach", True)
+
 browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chromedriver', chrome_options=options)
-# browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
-# time.sleep(3)
-# pyperclip.copy(os.environ['NAVERID'])
-# browser.find_element(By.ID, 'id').click()
-# # browser.find_element(By.ID, 'id').send_keys(Keys.COMMAND, 'v')
-# pyperclip.paste()
-# time.sleep(1)
-# pyperclip.copy(os.environ['NAVERPW'])
-# browser.find_element(By.ID, 'pw').click()
-# # browser.find_element(By.ID, 'pw').send_keys(Keys.COMMAND, 'v')
-# pyperclip.paste()
-# time.sleep(1)
-# browser.find_element(By.ID, 'log.login').click()
-# time.sleep(3)
+browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
+time.sleep(3)
+browser.find_element(By.ID, 'id').click()
+pyperclip.copy(os.environ['NAVERID'])
+browser.find_element(By.ID, 'id').send_keys(Keys.COMMAND, 'v')
+time.sleep(1)
+browser.find_element(By.ID, 'pw').click()
+pyperclip.copy(os.environ['NAVERPW'])
+browser.find_element(By.ID, 'pw').send_keys(Keys.COMMAND, 'v')
+time.sleep(1)
+browser.find_element(By.ID, 'log.login').click()
+time.sleep(3)
 browser.get('https://news.naver.com')
 
-soup = BeautifulSoup(browser.page_source, 'lxml') # html parsing
-
 # title & url 크롤링해서 DB에 저장
+soup = BeautifulSoup(browser.page_source, 'lxml') # html parsing
 news = soup.find_all('div', attrs={'class': 'main_brick_item _channel_news_card_wrapper'})
 for i in range(len(news)):
     channel = textMatch(news[i].find_all('h4', attrs={'class': 'channel'})[0].text)
@@ -86,8 +80,6 @@ for i in range(len(news)):
         cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_third, link_third, date))
     except mariadb.Error:
         print(f"db insert error: {mariadb.Error}")
-
 conn.commit()
 conn.close()
 browser.quit()
-    
