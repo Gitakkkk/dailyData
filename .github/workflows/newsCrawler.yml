@@ -4,10 +4,8 @@
 name: newsCrawler
 
 on:
-  # schedule:
-  #   - cron: '*/5 * * * *'
-  push:
-    branches: [main]
+  schedule:
+    - cron: '36 19 * * *'
 
 jobs:
   build:
