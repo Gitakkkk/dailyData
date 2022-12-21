@@ -25,8 +25,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python3 -m pip3 install --upgrade pip3
-          pip3 install beautifulsoup4 github lxml mariadb pyperclip python-dotenv pytz requests selenium
+          python -m pip install --upgrade pip
+          pip install beautifulsoup4 github lxml mariadb pyperclip python-dotenv pytz requests selenium
       - name: start crawler
         run: |
-          python3 crawler.py
+          python crawler.py
