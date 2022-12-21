@@ -3,11 +3,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 # from github import Github, Issue
-import pyperclip
+# import pyperclip
 import re
-import time
+# import time
 import dotenv
-import os
+# import os
 import datetime
 # import mariadb 
 
@@ -51,20 +51,20 @@ def textMatch(text):
 
 # 브라우저 열고 로그인 후 뉴스 진입
 browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chromedriver', chrome_options=options)
-browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
-time.sleep(3)
-pyperclip.copy(os.environ['NAVERID'])
-browser.find_element(By.ID, 'id').click()
-# browser.find_element(By.ID, 'id').send_keys(Keys.COMMAND, 'v')
-pyperclip.paste()
-time.sleep(1)
-pyperclip.copy(os.environ['NAVERPW'])
-browser.find_element(By.ID, 'pw').click()
-# browser.find_element(By.ID, 'pw').send_keys(Keys.COMMAND, 'v')
-pyperclip.paste()
-time.sleep(1)
-browser.find_element(By.ID, 'log.login').click()
-time.sleep(3)
+# browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
+# time.sleep(3)
+# pyperclip.copy(os.environ['NAVERID'])
+# browser.find_element(By.ID, 'id').click()
+# # browser.find_element(By.ID, 'id').send_keys(Keys.COMMAND, 'v')
+# pyperclip.paste()
+# time.sleep(1)
+# pyperclip.copy(os.environ['NAVERPW'])
+# browser.find_element(By.ID, 'pw').click()
+# # browser.find_element(By.ID, 'pw').send_keys(Keys.COMMAND, 'v')
+# pyperclip.paste()
+# time.sleep(1)
+# browser.find_element(By.ID, 'log.login').click()
+# time.sleep(3)
 browser.get('https://news.naver.com')
 
 soup = BeautifulSoup(browser.page_source, 'lxml') # html parsing
