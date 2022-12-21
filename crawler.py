@@ -9,6 +9,7 @@ import time
 import dotenv
 import os
 import datetime
+import xclip
 # import mariadb 
 
 dotenv_file = dotenv.find_dotenv()
@@ -54,14 +55,18 @@ browser = webdriver.Chrome(executable_path='/Users/nagitak/Desktop/dailyNews/chr
 browser.get('https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com')
 time.sleep(3)
 browser.find_element(By.ID, 'id').click()
-pyperclip.copy(os.environ['NAVERID'])
+# pyperclip.copy(os.environ['NAVERID'])
+xclip.copy(os.environ['NAVERID'])
 # browser.find_element(By.ID, 'id').send_keys(Keys.COMMAND, 'v')
-pyperclip.paste()
+# pyperclip.paste()
+xclip.paste()
 time.sleep(1)
 browser.find_element(By.ID, 'pw').click()
-pyperclip.copy(os.environ['NAVERPW'])
+# pyperclip.copy(os.environ['NAVERPW'])
+xclip.copy(os.environ['NAVERID'])
 # browser.find_element(By.ID, 'pw').send_keys(Keys.COMMAND, 'v')
-pyperclip.paste()
+# pyperclip.paste()
+xclip.paste()
 time.sleep(1)
 browser.find_element(By.ID, 'log.login').click()
 time.sleep(3)

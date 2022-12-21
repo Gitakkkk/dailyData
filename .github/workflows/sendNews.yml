@@ -28,11 +28,6 @@ jobs:
           sudo apt-get install xclip
           python -m pip install --upgrade pip
           pip install beautifulsoup4 lxml pyperclip python-dotenv pytz requests selenium
-      # Github Repository Secrets를 통해 환경 변수 파일을 생성합니다.
-      # - name: Generate Environment Variables File for Production
-      #   run: |
-      #     echo "NAVERID=$NAVERID" >> .env
-      #     echo "NAVERPW=$NAVERPW" >> .env
       - name: start crawler
         run: |
           python crawler.py
