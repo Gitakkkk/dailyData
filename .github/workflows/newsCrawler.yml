@@ -32,6 +32,6 @@ jobs:
           NAVERID: ${{ secrets.NAVERID }}
           NAVERPW: ${{ secrets.NAVERPW }}
         run: |
-          echo ${{ secrets.NAVERID }}
+          echo ${{ env.NAVERID }}
           echo ${{ secrets.NAVERPW }}
           python3 news.py
