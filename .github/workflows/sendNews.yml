@@ -27,6 +27,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pip==21.3.1
+          /opt/hostedtoolcache/Python/3.10.9/x64/bin/python -m pip install --upgrade pip
           pip install beautifulsoup4 lxml python-dotenv pytz requests selenium mariadb os
       - name: start crawler
         run: |
