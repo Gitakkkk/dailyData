@@ -9,20 +9,20 @@ import time
 import dotenv
 import os
 import datetime
-import mariadb 
+# import mariadb 
 
 dotenv_file = dotenv.find_dotenv()
 dotenv.load_dotenv(dotenv_file)
 
 # python - mariadb connect
-conn = mariadb.connect(
-    user=os.environ['dbUser'],
-    password=os.environ['dbPW'],
-    host=os.environ['dbHost'],
-    port=int(os.environ['dbPort']),
-    database=os.environ['dbName']
-)
-cur = conn.cursor() 
+# conn = mariadb.connect(
+#     user=os.environ['dbUser'],
+#     password=os.environ['dbPW'],
+#     host=os.environ['dbHost'],
+#     port=int(os.environ['dbPort']),
+#     database=os.environ['dbName']
+# )
+# cur = conn.cursor() 
 
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
@@ -79,14 +79,14 @@ for i in range(len(news)):
     link_third =  news[i].find_all('a', attrs={'class': 'cc_text_a _need_nclick _cds_link'})[2]['href']
     date = datetime.datetime.now().strftime('%y-%m-%d %H:%M')
     print(f'{channel}\n{title_first}\n{link_first}\n{date}\n{channel}\n{title_second}\n{link_second}\n{date}\n{channel}\n{title_third}\n{link_third}\n{date}')
-    try: 
-        cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_first, link_first, date))
-        cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_second, link_second, date))
-        cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_third, link_third, date))
-    except mariadb.Error:
-        print(f"db insert error: {mariadb.Error}")
+    # try: 
+    #     cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_first, link_first, date))
+    #     cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_second, link_second, date))
+    #     cur.execute("insert into news (channel, title, link, date) values (?, ?, ?, ?)", (channel, title_third, link_third, date))
+    # except mariadb.Error:
+    #     print(f"db insert error: {mariadb.Error}")
 
-conn.commit()
-conn.close()
+# conn.commit()
+# conn.close()
 browser.quit()
     
