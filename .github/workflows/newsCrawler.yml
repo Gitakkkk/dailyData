@@ -27,11 +27,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install beautifulsoup4 lxml python-dotenv pytz requests selenium
+        env:
+          NAVERID: ${{ env.NAVERID }}
+          NAVERPW: ${{ env.NAVERPW }}
       - name: start crawler
         run: |
-          ${{ secrets.NAVERID }}
-          ${{ secrets.NAVERPW }}
           python3 news.py
-        env:
-          NAVERID: ${{ secrets.NAVERID }}
-          NAVERPW: ${{ secrets.NAVERPW }}
