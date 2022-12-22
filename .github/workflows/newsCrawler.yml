@@ -5,7 +5,7 @@ name: newsCrawler
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 21 * * *'
 
 jobs:
   build:
