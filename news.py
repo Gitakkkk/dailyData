@@ -75,7 +75,6 @@ msg.attach(content)
 msg['Subject'] ="뉴스 리스트 (06시 기준)"
 msg['From'] = 'stom1028@naver.com'
 msg['To'] = 'tak.read2@gmail.com'
-print(msg.as_string())
 
 s = smtplib.SMTP( 'smtp.naver.com' , 587 ) 
 s.starttls() #TLS 보안 처리
