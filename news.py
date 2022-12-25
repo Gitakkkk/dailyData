@@ -12,14 +12,15 @@ dotenv_file = dotenv.find_dotenv()
 dotenv.load_dotenv(dotenv_file)
 
 conn = mariadb.connect(
-    user=os.environ['DBUser'],
+    user=os.environ['DBUSER'],
     password=os.environ['DBPW'],
-    host=os.environ['DBHost'],
-    port=int(os.environ['DBPort']),
-    database=os.environ['DBName']
+    host=os.environ['DBHOST'],
+    port=int(os.environ['DBPORT']),
+    database=os.environ['DBNAME']
 )
 cur = conn.cursor() 
 
+# 데이터 DB에 추가 (추후 쌓인 데이터들로 빈출 키워드 찾는 딥러닝 돌릴 예정)
 def insertData(title, link):
     print(title, link)
     try:
