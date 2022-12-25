@@ -5,53 +5,77 @@ import os
 import requests
 import smtplib
 import dotenv
+import mariadb
+import datetime
 
 dotenv_file = dotenv.find_dotenv()
 dotenv.load_dotenv(dotenv_file)
 
+conn = mariadb.connect(
+    user=os.environ['DBUser'],
+    password=os.environ['DBPW'],
+    host=os.environ['DBHost'],
+    port=int(os.environ['DBPort']),
+    database=os.environ['DBName']
+)
+cur = conn.cursor() 
+
+def insertData(title, link):
+    print(title, link)
+    try:
+        cur.execute("insert into news (title, link, date) values (?, ?, ?)", (title, link, datetime.datetime.now().strftime('%y-%m-%d %H:%M')))
+    except mariadb.Error:
+        print(f"db insert error: {mariadb.Error}")
+
 titles = []
 links = []
-
-# # 비즈니스워치
-# res = requests.get('http://news.bizwatch.co.kr/category/finance?_ga=2.38178848.2096161629.1671636637-1452714261.1671636637')
-# soup = BeautifulSoup(res.content, 'lxml')
-# articles = soup.find_all('dt', attrs={'class':'title'})
-# for i in range(3):
-#     titles.append({str(articles[i].text)})
-#     links.append(f'http:{articles[i].a["href"]}')
-# push push
 
 # 한경비즈니스
 res = requests.get('https://magazine.hankyung.com/tag/%EC%9E%AC%ED%85%8C%ED%81%AC')
 soup = BeautifulSoup(res.content, 'lxml')
 articles = soup.find_all('h3', attrs={'class':'news-tit'})
 for i in range(3):
-    titles.append(articles[i].text)
-    links.append(articles[i].a['href'])
+    title = articles[i].text
+    link = articles[i].a['href']
+    insertData(title, link)
+    titles.append(title)
+    links.append(link)
 
 # 매경이코노미
 res = requests.get('https://www.mk.co.kr/economy/list/money/')
 soup = BeautifulSoup(res.content, 'lxml')
 articles = soup.find_all('dt', attrs={'class':'tit'})
 for i in range(3):
-    titles.append(articles[i].text.split('\n')[1])
-    links.append(articles[i].a['href'])
+    title = articles[i].text.split('\n')[1]
+    link = articles[i].a['href']
+    insertData(title, link)
+    titles.append(title)
+    links.append(link)
 
 # 한경닷컴 
 res = requests.get('https://www.hankyung.com/economy')
 soup = BeautifulSoup(res.content, 'lxml')
 articles = soup.find_all('h2', attrs={'class':'news-tit'})
 for i in range(3):
-    titles.append(articles[i].text)
-    links.append(articles[i].a['href'])
+    title = articles[i].text
+    link = articles[i].a['href']
+    insertData(title, link)
+    titles.append(title)
+    links.append(link)
 
 # 매일경제
 res = requests.get('https://www.mk.co.kr/news/economy/')
 soup = BeautifulSoup(res.content, 'lxml')
 articles = soup.find_all('a', attrs={'class':'news_item'})
 for i in range(10, 13):
-    titles.append(articles[i].h3.text)
-    links.append(articles[i]['href'])
+    title = articles[i].h3.text
+    link = articles[i]['href']
+    insertData(title, link)
+    titles.append(title)
+    links.append(link)
+
+conn.commit()
+conn.close()
 
 msg = MIMEMultipart('alternative')
 내용 = f"""
