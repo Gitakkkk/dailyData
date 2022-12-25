@@ -6,6 +6,8 @@ name: newsCrawler
 on:
   schedule:
     - cron: '0 21 * * *'
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
@@ -29,5 +31,10 @@ jobs:
         env:
           NAVERID: ${{ secrets.NAVERID }}
           NAVERPW: ${{ secrets.NAVERPW }}
+          DBUSER: ${{ secrets.DBUSER }}
+          DBPW: ${{ secrets.DBPW }}
+          DBHOST: ${{ secrets.DBHOST }}
+          DBPORT: ${{ secrets.DBPORT }}
+          DBNAME: ${{ secrets.DBNAME }}
         run: |
           python3 news.py
