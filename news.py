@@ -5,28 +5,9 @@ import os
 import requests
 import smtplib
 import dotenv
-import mariadb
-import datetime
 
 dotenv_file = dotenv.find_dotenv()
 dotenv.load_dotenv(dotenv_file)
-
-conn = mariadb.connect(
-    user=os.environ['DBUSER'],
-    password=os.environ['DBPW'],
-    host=os.environ['DBHOST'],
-    port=int(os.environ['DBPORT']),
-    database=os.environ['DBNAME']
-)
-cur = conn.cursor() 
-
-# 데이터 DB에 추가 (추후 쌓인 데이터들로 빈출 키워드 찾는 딥러닝 돌릴 예정)
-def insertData(title, link):
-    print(title, link)
-    try:
-        cur.execute("insert into news (title, link, date) values (?, ?, ?)", (title, link, datetime.datetime.now().strftime('%y-%m-%d %H:%M')))
-    except mariadb.Error:
-        print(f"db insert error: {mariadb.Error}")
 
 titles = []
 links = []
@@ -38,7 +19,6 @@ articles = soup.find_all('h3', attrs={'class':'news-tit'})
 for i in range(3):
     title = articles[i].text
     link = articles[i].a['href']
-    insertData(title, link)
     titles.append(title)
     links.append(link)
 
@@ -49,7 +29,6 @@ articles = soup.find_all('dt', attrs={'class':'tit'})
 for i in range(3):
     title = articles[i].text.split('\n')[1]
     link = articles[i].a['href']
-    insertData(title, link)
     titles.append(title)
     links.append(link)
 
@@ -60,7 +39,6 @@ articles = soup.find_all('h2', attrs={'class':'news-tit'})
 for i in range(3):
     title = articles[i].text
     link = articles[i].a['href']
-    insertData(title, link)
     titles.append(title)
     links.append(link)
 
@@ -71,12 +49,8 @@ articles = soup.find_all('a', attrs={'class':'news_item'})
 for i in range(10, 13):
     title = articles[i].h3.text
     link = articles[i]['href']
-    insertData(title, link)
     titles.append(title)
     links.append(link)
-
-conn.commit()
-conn.close()
 
 msg = MIMEMultipart('alternative')
 내용 = f"""
