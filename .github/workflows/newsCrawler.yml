@@ -27,6 +27,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
+          sudo apt-get install libmariadb3 libmariadb-dev
           python -m pip install --upgrade pip
           pip install beautifulsoup4 lxml python-dotenv requests mariadb==1.1.5.post3 datetime
       - name: Start crawler
